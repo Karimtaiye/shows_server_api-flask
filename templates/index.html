@@ -1,33 +1,36 @@
-{% extends "layout.html" %} {% block body %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shows</title>
+  </head>
+  <body>
+    <input
+      type="text"
+      name="q"
+      id="input"
+      autocomplete="off"
+      autofocus
+      placeholder="Query"
+    />
+    <!-- </form> -->
+    <ul id="ul"></ul>
 
-<!-- <form action="/search" method="get"> -->
-<input
-  type="text"
-  name="q"
-  id="input"
-  autocomplete="off"
-  autofocus
-  placeholder="Query"
-/>
-<!-- </form> -->
-<ul id="ul"></ul>
-<!-- http://127.0.0.1:5000/search?q=office http://127.0.0.1:5000/search?q=office -->
+    <script>
+      const input = document.getElementById("input");
+      const ul = document.getElementById("ul");
+      input.addEventListener("input", async function (e) {
+        // console.log(e.target.value, input.value);
+        const response = await fetch(`/search?q=${e.target.value}`);
+        const data = await response.json();
+        const shows = data.result;
 
-<script>
-  const input = document.getElementById("input");
-  const ul = document.getElementById("ul");
-  input.addEventListener("input", async function (e) {
-    // console.log(e.target.value, input.value);
-    const response = await fetch(`/search?q=${e.target.value}`);
-    const data = await response.json();
-    const shows = data.result;
-
-    const elemets = shows.map((el) => {
-      return `<li>${el.title}</li>`;
-    });
-    ul.innerHTML = elemets.join(" ");
-    console.log(elemets.join(" "));
-  });
-</script>
-
-{% endblock %}
+        const elemets = shows.map((el) => {
+          return `<li>${el.title}</li>`;
+        });
+        ul.innerHTML = elemets.join(" ");
+        console.log(elemets.join(" "));
+      });
+    </script>
+  </body>
+</html>
